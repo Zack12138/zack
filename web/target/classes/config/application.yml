@@ -1,0 +1,12 @@
+server:
+ port: 9999
+
+spring.datasource:
+ url: jdbc:mysql://192.168.190.100:3306/reptile
+ username: reptile
+ password: reptile
+ driver-class-name: com.mysql.jdbc.Driver
+ max-idle: 10
+ max-wait: 1000
+ min-idle: 5
+ initial-size: 5
