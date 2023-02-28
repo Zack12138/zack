@@ -113,6 +113,34 @@ public class HttpUtil {
 		return null;
 	}
 
+	public static byte[] httpGet(String url, Map<String, ?> param) {
+		CloseableHttpClient client = null;
+		try {
+			if (url == null || url.trim().length() == 0) {
+				throw new Exception("URL is null");
+			}
+			client = HttpClients.createDefault();
+			if (param != null) {
+				StringBuffer sb = new StringBuffer("?");
+				for (String key : param.keySet()) {
+					sb.append(key).append("=").append(param.get(key)).append("&");
+				}
+				url = url.concat(sb.toString());
+				url = url.substring(0, url.length() - 1);
+			}
+			HttpGet httpGet = new HttpGet(url);
+			HttpResponse resp = client.execute(httpGet);
+			if (resp.getStatusLine().getStatusCode() == 200) {
+				return EntityUtils.toByteArray(resp.getEntity());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(client);
+		}
+		return null;
+	}
+
 	/**
 	 * 关闭HTTP请求
 	 * 

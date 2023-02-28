@@ -68,6 +68,42 @@ public class StringUtil {
 		}
 		return field;
 	}
-	
-	
+
+
+	/**
+	 * @param name  需要匹配的名称
+	 * @param match 匹配规则
+	 * @return 全部匹配成功返回true 若有一项匹配失败则返回false
+	 */
+	public static boolean matchName(String name, String... match) {
+		if (name == null | match == null)
+			return false;
+		for (String m : match)
+			if (isRegular(m))
+				if (!Pattern.matches(m, name))
+					return false;
+				else if (name.indexOf(m) == -1)
+					return false;
+		return true;
+	}
+
+
+	public static boolean isRegular(String str) {
+		assert str != null : "输入参数不能为null";
+		return str.startsWith("/") && str.endsWith("/");
+	}
+
+
+	public static String unicodeToString(String str) {
+
+		Pattern pattern = Pattern.compile("(\\\\u(\\p{XDigit}{4}))");
+		Matcher matcher = pattern.matcher(str);
+		char ch;
+		while (matcher.find()) {
+			ch = (char) Integer.parseInt(matcher.group(2), 16);
+			str = str.replace(matcher.group(1), ch + "");
+		}
+		return str;
+	}
+
 }
