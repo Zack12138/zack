@@ -26,7 +26,7 @@ public class QQNewDownload extends Reptile{
         //https://manhuabika.com/pcomicview/?cid=627fe215b48f103d9e552cba
         //https://manhuabika.com/pchapter/?cid=627fe215b48f103d9e552cba&chapter=1&chapterPage=1&maxchapter=24
 
-        String target = "E:\\迅雷下载\\2302";
+        String target = "D:\\VOL\\1\\迅雷下载\\和谐物\\图片\\2303";
 
         try {
             new QQNewDownload().download(url,target);

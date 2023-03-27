@@ -39,7 +39,7 @@ public class QQqunDownload extends Reptile {
 			try {
 				downloadPath = args[0];
 			} catch (Exception e) {
-				downloadPath = "E:/VOL/F/迅雷下载/和谐物/图片/2201";
+				downloadPath = "D:/VOL/1/迅雷下载/和谐物/图片/2303/";
 			}
 			QQqunDownload down = new QQqunDownload();
 			String url = null;
@@ -67,19 +67,19 @@ public class QQqunDownload extends Reptile {
 
 		Document document = Jsoup.connect(url).cookie("pwd", pwd).get();
 		
-		Element titleEle = document.selectFirst("h2.note-title");
+		Element titleEle = document.selectFirst("#content-title");
 
 		final String title = titleEle.text().replaceAll("\\.", "");
 
 		saveURL(url,target + File.separator + title + File.separator);
 		
-		Elements eles = document.select("div.note-content img");
+		Elements eles = document.select("img");
 
 		final List<String[]> timeoutList = new ArrayList<>();
 		
 		Element imgEle = null;
 
-
+		System.out.println(eles.size());
 
 		for (int i = 0; i < eles.size(); i++) {
 
