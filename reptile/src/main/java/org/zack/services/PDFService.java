@@ -1,9 +1,8 @@
 package org.zack.services;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
+import org.springframework.util.StringUtils;
 import org.zack.utils.FileUtil;
 
 import java.io.File;
@@ -14,23 +13,32 @@ import java.util.List;
 public class PDFService {
 
     public static void main(String[] args) throws FileNotFoundException, DocumentException {
+        PDFService pdfService = new PDFService();
+        pdfService.exportPDF("D:\\VOL\\1\\迅雷下载\\和谐物\\整理\\2云长\\.本子\\调教家政妇\\img");
 
-}
+    }
 
 public void exportPDF(String path){
     try {
 
         List<File> files = FileUtil.loadFileList(path);
 
+        String name = StringUtils.unqualify(path,'\\');
 
+        Document doc = init(path+"\\"+name+".pdf");
 
-        Document doc = init(path+"");
+        for (File file:files) {
 
+            Image img = Image.getInstance(file.toURI().toURL());
+            float width = img.getWidth();
+            float height = img.getHeight();
+            setPageSize(doc,width,height);
+            doc.newPage();
+            img.setAbsolutePosition(0, 0);
+ //           img.scaleAbsolute(595, 842);
+            doc.add(img);
+        }
 
-        // 4.添加一个内容段落
-        doc.add(new Paragraph("Hello World!"));
-
-        // 5.关闭文档
         doc.close();
     } catch (Exception e) {
         throw new RuntimeException(e);
@@ -39,10 +47,20 @@ public void exportPDF(String path){
 }
 
 private Document init(String path) throws FileNotFoundException, DocumentException {
-    Document document = new Document();
-    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path));
+    Document document = new Document(PageSize.A4, 0, 0, 0, 0);
+    File file = new File(path);
+    if (file.exists())
+        file.delete();
+    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
     document.open();
     return document;
 }
+
+    private  void setPageSize(Document document,float width,float heigth){
+        //竖向
+        Rectangle pageSize = new Rectangle(width, heigth);
+        // pageSize.rotate();
+        document.setPageSize(pageSize);
+    }
 
 }
