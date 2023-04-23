@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class M3u8Download extends Reptile{
     static String m3u8url = "http://img.rr.tv/ugc/20221110/o_64e9cc02481c4f4e94832f658099d8d9.html??=eJwdy8EOgjAQhOGnmaOk7W5p90hxOfAAJh4t1XgwgELi61tM5vAfvomefZBT5Naa+0TFiuFsOYvJMmUylktxDwcayvKdX8utgM4IPbRFMkgRykiC6N/QgKTomClQYDL+7wKiO0Q9xAixUA9JED2iU6S2sue+rxuogxvqtubTbHMzzbWv6zi6yw9pSik3";// m3u8链接
     static String fileName = "";// 保存文件名
-    static String Dir = "D:\\zack\\Downloads\\Video\\m3u8\\2302-1\\";// 保存路径
+    static String Dir = "D:\\zack\\Downloads\\Video\\m3u8\\2303-1\\";// 保存路径
     static String KEY = "";// 加密视频的密钥，位数必须为16的倍数
     static int N = 10;// 线程数10
     static int INDEX = 0;// 下标
@@ -62,7 +62,7 @@ public class M3u8Download extends Reptile{
                 }
                 KEY = sendGet(keyUrl, StandardCharsets.UTF_8.name());
                 System.out.println(KEY);// 加密视频的key
-            } else if (s.contains(".ts")) {
+            } else if (s.startsWith("http")) {
                 if (s.startsWith("http")) {
                     urls.add(s);
                 } else {
