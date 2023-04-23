@@ -41,29 +41,18 @@ public class HttpsUtil {
 
 	public static byte[] httpsConnection(String httpsUrl) throws ReptileException {
 
-		return httpsConnection(httpsUrl, null,RequestMethod.GET,null);
+		return httpsConnection(httpsUrl, null,RequestMethod.GET);
 	}
 
 	public static byte[] httpsConnection(String httpsUrl, Map<String, ?> param) throws ReptileException {
 		
-		return httpsConnection(httpsUrl, param,RequestMethod.GET,null);
+		return httpsConnection(httpsUrl, param,RequestMethod.GET);
 	}
 	
 	public static byte[] httpsConnection(String httpsUrl, Map<String, ?> param,RequestMethod method) throws ReptileException {
-		return httpsConnection(httpsUrl, param, method, null);
-	}
-	
-	public static byte[] httpsConnection(String httpsUrl, Map<String, ?> param,RequestMethod method,Map<String,String> requestHead) throws ReptileException {
-
-		DataInputStream in = null;
-		DataOutputStream out = null;
-		ByteArrayOutputStream arrayOut = null;
-		HttpsURLConnection urlCon = null;
 		StringBuilder paramStr = new StringBuilder();
-
 		if (param != null) {
 			Iterator<?> iterator = param.entrySet().iterator();
-
 			while (iterator.hasNext()) {
 				Map.Entry<String, ?> entry = (Map.Entry<String, ?>) iterator.next();
 				paramStr.append("&").append(entry.getKey()).append("=").append(entry.getValue());
@@ -73,13 +62,22 @@ public class HttpsUtil {
 				paramStr.delete(0, 1);
 			}else {
 				// 判断URL中是否包含? 若包含直接追加参数 不包含则把第一个&更改为?
-				if (httpsUrl.indexOf("?") == -1) {
+				if (!httpsUrl.contains("?")) {
 					paramStr.replace(0, 1, "?");
 				}
 				paramStr.insert(0, httpsUrl);
 				httpsUrl = paramStr.toString();
 			}
 		}
+		return httpsConnection(httpsUrl, paramStr.toString(), method, null);
+	}
+	
+	public static byte[] httpsConnection(String httpsUrl, String param,RequestMethod method,Map<String,String> requestHead) throws ReptileException {
+
+		DataInputStream in = null;
+		DataOutputStream out = null;
+		ByteArrayOutputStream arrayOut = null;
+		HttpURLConnection urlCon = null;
 
 		try {
 			SSLContext sslcontext = SSLContext.getInstance("SSL", "SunJSSE");
@@ -97,7 +95,7 @@ public class HttpsUtil {
 			if("https".equalsIgnoreCase(url.getProtocol())){
 				ignoreSsl();
 			}
-			urlCon = (HttpsURLConnection) url.openConnection();
+			urlCon = (HttpURLConnection) url.openConnection();
 			urlCon.setConnectTimeout(120000);
 			urlCon.setReadTimeout(120000);
 			if(method == null)
@@ -118,7 +116,7 @@ public class HttpsUtil {
 			if(RequestMethod.POST.equals(method)) {
 				urlCon.setDoOutput(true);
 				out = new DataOutputStream(urlCon.getOutputStream());
-				out.write(paramStr.toString().getBytes());
+				out.write(param.getBytes());
 				out.flush();
 			}
 			
