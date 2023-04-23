@@ -1,2 +1,0 @@
-CREATE DATABASE `reptile` CHARACTER SET 'utf8mb4';
-

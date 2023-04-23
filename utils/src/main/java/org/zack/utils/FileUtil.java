@@ -12,6 +12,9 @@ package org.zack.utils;
 import org.zack.constant.ReptileException;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @Package: com.dls.reptile.util
@@ -51,13 +54,19 @@ public class FileUtil {
 		}
 	}
 
-	public static String loadFile(String path) {
+	public static List<File> loadFileList(String path) {
 		File file = new File(path);
+		ArrayList<File> result = new ArrayList<>();
 		if (!file.exists() || !file.canRead()) {
-			System.out.println();
+			throw new ReptileException("["+path+"]文件不存在或不可读");
 		}
-		return null;
-
+		if (file.isFile()){
+			result.add(file);
+		}else {
+			File[] files = file.listFiles();
+			result.addAll(Arrays.asList(files));
+		}
+		return result;
 	}
 
 
@@ -68,6 +77,9 @@ public class FileUtil {
 		BufferedOutputStream out = null;
 		try {
 			File file = new File(path);
+			if(!file.getParentFile().exists()){
+				file.getParentFile().mkdirs();
+			}
 			if (!file.exists()) {
 				file.createNewFile();
 			}
