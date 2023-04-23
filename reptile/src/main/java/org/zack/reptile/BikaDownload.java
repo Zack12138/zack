@@ -12,10 +12,10 @@ public class BikaDownload extends Reptile{
         String url = "https://api.manhuabika.com/comics/63e3c27cc0d70f4660709b9c/recommendation";
 
         HashMap<String, String> herder = new HashMap<>();
-        herder.put(":authority","api.manhuabika.com");
-        herder.put(":method","GET");
-        herder.put(":path","/comics/63e3c27cc0d70f4660709b9c/recommendation");
-        herder.put(":scheme","https");
+//        herder.put(":authority","api.manhuabika.com");
+//        herder.put(":method","GET");
+//        herder.put(":path","/comics/63e3c27cc0d70f4660709b9c/recommendation");
+//        herder.put(":scheme","https");
         herder.put("accept","application/vnd.picacomic.com.v1+json");
         herder.put("accept-encoding","gzip, deflate, br");
         herder.put("accept-language","zh,zh-TW;q=0.9,en-US;q=0.8,en;q=0.7,zh-CN;q=0.6");
